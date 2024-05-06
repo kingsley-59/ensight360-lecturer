@@ -57,22 +57,24 @@ export default function ProfileHome() {
                         </Card>
 
                         {sampleDepartments.map(dept => (
-                            <Card className="w-full max-w-sm ">
-                                <CardHeader >
-                                    <CardDescription className="flex justify-between items-center cursor-pointer">
-                                        {dept.name}
-                                        <Settings size={30} />
-                                    </CardDescription>
-                                    <CardTitle className="text-xl">{dept.short}</CardTitle>
-                                </CardHeader>
-                                <CardContent >
+                            <Link to={'/dashboard'}>
+                                <Card className="w-full max-w-sm ">
+                                    <CardHeader >
+                                        <CardDescription className="flex justify-between items-center cursor-pointer">
+                                            {dept.name}
+                                            <Settings size={30} />
+                                        </CardDescription>
+                                        <CardTitle className="text-xl">{dept.short}</CardTitle>
+                                    </CardHeader>
+                                    <CardContent >
 
-                                </CardContent>
-                                <CardFooter className="grid text-sm">
-                                    <div>{dept.faculty}</div>
-                                    <div>{dept.institution}</div>
-                                </CardFooter>
-                            </Card>
+                                    </CardContent>
+                                    <CardFooter className="grid text-sm">
+                                        <div>{dept.faculty}</div>
+                                        <div>{dept.institution}</div>
+                                    </CardFooter>
+                                </Card>
+                            </Link>
                         ))}
                     </div>
 

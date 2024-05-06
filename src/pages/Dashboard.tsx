@@ -16,10 +16,10 @@ import {
 import { CalendarDateRangePicker } from "@/components/dashboard/DateRangePicker"
 import { MainNav } from "@/components/dashboard/MainNav"
 import { Overview } from "@/components/dashboard/Overview"
-import { RecentSales } from "@/components/dashboard/RecentSales"
 import { Search } from "@/components/dashboard/Search"
 import TeamSwitcher from "@/components/dashboard/TeamSwitcher"
 import { UserNav } from "@/components/dashboard/UserNav"
+import { DeptRegistry } from "@/components/dashboard/DeptRegistry"
 
 
 export default function DashboardPage() {
@@ -63,10 +63,10 @@ export default function DashboardPage() {
                     <Tabs defaultValue="overview" className="space-y-4">
                         <TabsList>
                             <TabsTrigger value="overview">Overview</TabsTrigger>
-                            <TabsTrigger value="analytics" disabled>
+                            <TabsTrigger value="analytics" >
                                 Analytics
                             </TabsTrigger>
-                            <TabsTrigger value="reports" disabled>
+                            <TabsTrigger value="reports" >
                                 Reports
                             </TabsTrigger>
                             <TabsTrigger value="notifications" disabled>
@@ -188,13 +188,13 @@ export default function DashboardPage() {
                                 </Card>
                                 <Card className="col-span-3">
                                     <CardHeader>
-                                        <CardTitle>Recent Sales</CardTitle>
+                                        <CardTitle>Registry</CardTitle>
                                         <CardDescription>
-                                            You made 265 sales this month.
+                                            You have a total of 18 lecturers in this department
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent>
-                                        <RecentSales />
+                                        <DeptRegistry />
                                     </CardContent>
                                 </Card>
                             </div>
