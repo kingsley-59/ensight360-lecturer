@@ -20,19 +20,19 @@ export function MainNav({
                 href="/examples/dashboard"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
             >
-                Customers
+                Classes
             </a>
             <a
                 href="/examples/dashboard"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
             >
-                Products
+                Students
             </a>
             <a
                 href="/examples/dashboard"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
             >
-                Settings
+                Results
             </a>
         </nav>
     )

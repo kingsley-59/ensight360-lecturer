@@ -7,7 +7,7 @@ import { persist, devtools } from "zustand/middleware";
 
 interface User {
     displayName: string,
-    photoUrl: string,
+    photoUrl?: string,
     email: string,
     getIdToken?: () => Promise<string>
 }
@@ -17,12 +17,12 @@ type AuthState = {
     setIsAuthenticated: (isAuthenticated: boolean) => void;
     user: User | null;
     setUser: (user: User) => void;
-    login: (email: string, password: string) => Promise<void>;
-    loginWithGoogle: () => void;
+    login?: (email: string, password: string) => Promise<void>;
+    loginWithGoogle?: () => void;
     logout: () => void;
 }
 
-const useAuthStore = create<Partial<AuthState>>()(
+const useAuthStore = create<AuthState>()(
     devtools(
         persist(
             (set) => ({
@@ -30,8 +30,8 @@ const useAuthStore = create<Partial<AuthState>>()(
                 setIsAuthenticated: (isAuthenticated: boolean) => {
                     set((state) => ({ ...state, isAuthenticated }));
                 },
-                // user: auth.currentUser,
-                // setUser: (user) => set((state) => ({ ...state, user })),
+                user: null,
+                setUser: (user) => set((state) => ({ ...state, user })),
                 // login: async (email: string, password: string) => {
                 //     const userCredentials = await signInWithEmailAndPassword(auth, email, password);
                 //     set((state) => ({
@@ -50,10 +50,9 @@ const useAuthStore = create<Partial<AuthState>>()(
                 //         isAuthenticated: true,
                 //     }));
                 // },
-                // logout: async () => {
-                //     await signOut(auth).catch((error) => toast.error(error?.code || error.message || "Failed to signout"));
-                //     set((state) => ({ ...state, user: null, isAuthenticated: false }))
-                // },
+                logout: async () => {
+                    set((state) => ({ ...state, user: null, isAuthenticated: false }))
+                },
             }),
             {
                 name: 'auth-storage',

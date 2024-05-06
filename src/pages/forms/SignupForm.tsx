@@ -1,15 +1,50 @@
 import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useToast } from "@/components/ui/use-toast"
+import useAuthStore from "@/stores/authStore"
+import { useForm } from "react-hook-form"
+
+
+interface SignupForm {
+    firstname: string,
+    lastname: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+}
 
 export default function SignupForm() {
+    const { toast } = useToast()
+    const { register, handleSubmit } = useForm<SignupForm>();
+    const { setUser, setIsAuthenticated } = useAuthStore()
+
+    function formHandler(formData: SignupForm) {
+        const { email, firstname, lastname, confirmPassword, password } = formData;
+        if (password !== confirmPassword) {
+            console.log("not submitted...")
+            toast({
+                title: "Form Error",
+                description: "Passwords do not match",
+                variant: "destructive"
+            })
+            return ;
+        }
+        setUser({
+            displayName: `${firstname} ${lastname}`,
+            email
+        })
+        setIsAuthenticated(true)
+        console.log("submitted...")
+    }
+
     return (
         <Card className="mx-auto max-w-sm">
             <CardHeader>
@@ -19,15 +54,15 @@ export default function SignupForm() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="grid gap-4">
+                <form onSubmit={handleSubmit(formHandler)} className="grid gap-4">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="first-name">First name</Label>
-                            <Input id="first-name" placeholder="Max" required />
+                            <Input id="first-name" placeholder="Max" {...register('firstname')} required />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="last-name">Last name</Label>
-                            <Input id="last-name" placeholder="Robinson" required />
+                            <Input id="last-name" placeholder="Robinson" {...register('lastname')} required />
                         </div>
                     </div>
                     <div className="grid gap-2">
@@ -36,20 +71,22 @@ export default function SignupForm() {
                             id="email"
                             type="email"
                             placeholder="m@example.com"
+                            {...register('email')}
                             required
                         />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="password">Password</Label>
-                        <Input id="password" type="password" />
+                        <Input id="password" type="password" {...register('password')} />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="password">Confirm Password</Label>
+                        <Input id="confirm-password" type="password" {...register('confirmPassword')} />
                     </div>
                     <Button type="submit" variant='default' className="w-full">
                         Create an account
                     </Button>
-                    <Button variant="outline" className="w-full">
-                        Sign up with GitHub
-                    </Button>
-                </div>
+                </form>
                 <div className="mt-4 text-center text-sm">
                     Already have an account?{" "}
                     <a href="#" className="underline">

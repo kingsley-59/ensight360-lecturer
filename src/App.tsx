@@ -6,8 +6,11 @@ import AuthLayout from './layouts/AuthLayout';
 import ErrorPage from './pages/ErrorPage';
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
-// import AuthGuard from './layouts/AuthGuard';
-// import DashboardLayout from './layouts/DashboardLayout';
+import AuthGuard from './layouts/AuthGuard';
+import DashboardLayout from './layouts/DashboardLayout';
+import { Toaster } from './components/ui/toaster';
+import CreateDepartment from './pages/CreateDepartment';
+import ProfileHome from './pages/ProfileHome';
 
 
 const router = createBrowserRouter([
@@ -20,18 +23,29 @@ const router = createBrowserRouter([
         index: true,
         element: <AuthPage />
       },
+      {
+        path: 'login',
+        element: <AuthPage />
+      },
     ]
   },
   {
     path: '*',
-    // element: (<AuthGuard><DashboardLayout /></AuthGuard>),
-    // errorElement: <ErrorPage />,
+    element: (<AuthGuard><DashboardLayout /></AuthGuard>),
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <Dashboard />
-        // element: (<div className='w-full h-screen text-green-500 bg-primary'>This is the signup page</div>)
+        element: <ProfileHome />
       },
+      {
+        path: 'dashboard',
+        element: <Dashboard />
+      },
+      {
+        path: 'createDepartment',
+        element: <CreateDepartment />
+      }
     ]
   }
 ]);
@@ -42,6 +56,7 @@ export default function App() {
   return (
     <HelmetProvider >
       <RouterProvider router={router} />
+      <Toaster />
     </HelmetProvider>
   )
 }

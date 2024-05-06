@@ -1,4 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+body {
+    font-family: 'Lexend', sans-serif;
+}
+
+.lexend {
+    font-family: 'Lexend', sans-serif;
+}
+
+.inter {
+    font-family: 'Inter', sans-serif;
+}
+
+.roboto {
+    font-family: 'Roboto', sans-serif;
+}
