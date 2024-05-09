@@ -15,11 +15,11 @@ import {
 } from "@/components/ui/tabs"
 import { CalendarDateRangePicker } from "@/components/dashboard/DateRangePicker"
 import { MainNav } from "@/components/dashboard/MainNav"
-import { Overview } from "@/components/dashboard/Overview"
 import { Search } from "@/components/dashboard/Search"
 import TeamSwitcher from "@/components/dashboard/TeamSwitcher"
 import { UserNav } from "@/components/dashboard/UserNav"
 import { DeptRegistry } from "@/components/dashboard/DeptRegistry"
+import ClassesTable from "@/components/dashboard/ClassesTable"
 
 
 export default function DashboardPage() {
@@ -63,7 +63,7 @@ export default function DashboardPage() {
                     <Tabs defaultValue="overview" className="space-y-4">
                         <TabsList>
                             <TabsTrigger value="overview">Overview</TabsTrigger>
-                            <TabsTrigger value="analytics" >
+                            {/* <TabsTrigger value="analytics" >
                                 Analytics
                             </TabsTrigger>
                             <TabsTrigger value="reports" >
@@ -71,14 +71,14 @@ export default function DashboardPage() {
                             </TabsTrigger>
                             <TabsTrigger value="notifications" disabled>
                                 Notifications
-                            </TabsTrigger>
+                            </TabsTrigger> */}
                         </TabsList>
                         <TabsContent value="overview" className="space-y-4">
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                                 <Card>
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                         <CardTitle className="text-sm font-medium">
-                                            Total Revenue
+                                            Total Students
                                         </CardTitle>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +94,7 @@ export default function DashboardPage() {
                                         </svg>
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="text-2xl font-bold">$45,231.89</div>
+                                        <div className="text-2xl font-bold">621</div>
                                         <p className="text-xs text-muted-foreground">
                                             +20.1% from last month
                                         </p>
@@ -103,7 +103,7 @@ export default function DashboardPage() {
                                 <Card>
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                         <CardTitle className="text-sm font-medium">
-                                            Subscriptions
+                                            Total Classes
                                         </CardTitle>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +121,7 @@ export default function DashboardPage() {
                                         </svg>
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="text-2xl font-bold">+2350</div>
+                                        <div className="text-2xl font-bold">+17</div>
                                         <p className="text-xs text-muted-foreground">
                                             +180.1% from last month
                                         </p>
@@ -129,7 +129,7 @@ export default function DashboardPage() {
                                 </Card>
                                 <Card>
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                        <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                                        <CardTitle className="text-sm font-medium">Lecturers</CardTitle>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 24 24"
@@ -145,7 +145,7 @@ export default function DashboardPage() {
                                         </svg>
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="text-2xl font-bold">+12,234</div>
+                                        <div className="text-2xl font-bold">+27</div>
                                         <p className="text-xs text-muted-foreground">
                                             +19% from last month
                                         </p>
@@ -154,7 +154,7 @@ export default function DashboardPage() {
                                 <Card>
                                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                         <CardTitle className="text-sm font-medium">
-                                            Active Now
+                                            Total Courses
                                         </CardTitle>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +170,7 @@ export default function DashboardPage() {
                                         </svg>
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="text-2xl font-bold">+573</div>
+                                        <div className="text-2xl font-bold">+41</div>
                                         <p className="text-xs text-muted-foreground">
                                             +201 since last hour
                                         </p>
@@ -180,10 +180,11 @@ export default function DashboardPage() {
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                                 <Card className="col-span-4">
                                     <CardHeader>
-                                        <CardTitle>Overview</CardTitle>
+                                        <CardTitle>Classes</CardTitle>
                                     </CardHeader>
-                                    <CardContent className="pl-2">
-                                        <Overview />
+                                    <CardContent className="_pl-2">
+                                        {/* <Overview /> */}
+                                        <ClassesTable />
                                     </CardContent>
                                 </Card>
                                 <Card className="col-span-3">
