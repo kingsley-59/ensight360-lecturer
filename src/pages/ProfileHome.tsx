@@ -32,11 +32,11 @@ export default function ProfileHome() {
     const { user } = useAuthStore()
 
     return (
-        <div className="w-full h-screen rounded-md relative">
+        <div className="w-full _h-screen rounded-md relative">
             <div className="absolute top-0 left-0 w-full h-2/5 bg-slate-900">
                 <img className="w-full h-full object-cover opacity-50" src="/images/class-ai-1.jpeg" alt="Beautiful background image" />
             </div>
-            <div className="w-full h-full overflow-y-auto relative">
+            <div className="w-full h-full _overflow-y-auto relative">
                 <div className="w-full p-3 sticky">
                     <Logo />
                 </div>

@@ -1,6 +1,6 @@
 
 import { ColumnDef } from '@tanstack/react-table';
-import { DataTable } from './DataTable';
+import { DataTable } from '../dashboard/DataTable';
 import { Button } from '../ui/button';
 
 

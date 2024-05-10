@@ -67,3 +67,20 @@ export interface DepartmentRegistry extends Model {
     classAssigned: Class,
     isHod: boolean,
 }
+
+export interface Assessment {
+    course: string,
+    name: string,
+    maxScore: number,
+}
+
+export interface Course {
+    title: string,
+    code: string,
+    units: number,
+    hasPractical: boolean,
+    cordinator: Lecturer,
+    createdBy: Lecturer,
+    department: Department,
+    assessments: Assessment[]
+}

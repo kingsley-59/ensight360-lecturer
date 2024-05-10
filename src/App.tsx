@@ -11,6 +11,8 @@ import DashboardLayout from './layouts/DashboardLayout';
 import { Toaster } from './components/ui/toaster';
 import CreateDepartment from './pages/CreateDepartment';
 import ProfileHome from './pages/ProfileHome';
+import Courses from './pages/Courses';
+import TaskPage from './components/tasks';
 
 
 const router = createBrowserRouter([
@@ -41,6 +43,22 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <Dashboard />
+      },
+      {
+        path: 'courses',
+        element: <Courses />
+      },
+      {
+        path: 'students',
+        element: <></>
+      },
+      {
+        path: 'results',
+        element: <></>
+      },
+      {
+        path: 'tasks',
+        element: <TaskPage />
       },
       {
         path: 'createDepartment',
