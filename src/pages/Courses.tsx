@@ -1,8 +1,10 @@
 import CoursesTable from "@/components/data-tables/CoursesTable";
+import StudentsTable from "@/components/data-tables/StudentsTable";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileIcon, PlusIcon } from "lucide-react";
+import { FileIcon } from "lucide-react";
+import { useState } from "react";
 
 
 function CourseSummaryTab() {
@@ -79,22 +81,36 @@ function CourseSummaryTab() {
     )
 }
 
+function StudentManagementTab() {
+
+    return (
+        <div className="w-full space-y-4">
+            <div className="space-y-2">
+                <CardTitle>Student Management</CardTitle>
+                <CardDescription>Manage the students enrolled in this course</CardDescription>
+            </div>
+            <StudentsTable />
+        </div>
+    )
+}
+
 export default function Courses() {
+    const [selectedCourse, ] = useState('jjj')
 
     return (
         <div className="container space-y-4">
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Courses</h2>
                 <div className="flex items-center space-x-2">
-                    <Button variant={'default'} className="flex gap-2 text-base">Create Course <PlusIcon size={20} /></Button>
+                    <Button variant={'default'} className="flex gap-2 text-base">Create Course</Button>
                 </div>
             </div>
             <Card className="col-span-4">
-                <CardContent className="">
+                <CardContent className="pt-4">
                     <Tabs defaultValue="details" className="space-y-4">
                         <TabsList>
-                            <TabsTrigger value="details">Details</TabsTrigger>
-                            <TabsTrigger value="students" >Registered Students</TabsTrigger>
+                            <TabsTrigger value="details">Course Details</TabsTrigger>
+                            <TabsTrigger value="students" >Student Management</TabsTrigger>
                             {/* <TabsTrigger value="grading" >
                                 Grading
                             </TabsTrigger>
@@ -103,7 +119,22 @@ export default function Courses() {
                             </TabsTrigger> */}
                         </TabsList>
                         <TabsContent value="details" className="space-y-4">
-                            <CourseSummaryTab />
+                            {(selectedCourse) ? (
+                                <CourseSummaryTab />
+                            ) : (
+                                <div className="w-full h-24 text-center">
+                                    Select a course to see details
+                                </div>
+                            )}
+                        </TabsContent>
+                        <TabsContent value="students" className="space-y-4" >
+                            {(selectedCourse) ? (
+                                <StudentManagementTab />
+                            ) : (
+                                <div className="w-full h-24 text-center">
+                                    Select a course to see details
+                                </div>
+                            )}
                         </TabsContent>
                     </Tabs>
                 </CardContent>

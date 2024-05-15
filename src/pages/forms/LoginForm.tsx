@@ -1,3 +1,4 @@
+import { loginUser } from "@/api/user"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -9,14 +10,40 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import useAuthStore from "@/stores/authStore"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
+
+interface LoginForm {
+    email: string,
+    password: string,
+    profile: string,
+}
+
 export default function LoginForm() {
-    const { register, setValue, handleSubmit } = useForm()
+    const { register, setValue, watch, handleSubmit } = useForm<LoginForm>()
+    const { setUser, setIsAuthenticated } = useAuthStore()
+    const [loading, setLoading] = useState(false)
 
-    function formHandler() {
-
+    async function formHandler(formData: LoginForm) {
+        setLoading(true)
+        const result = await loginUser({...formData}).finally(() => setLoading(false))
+        console.log('login result', result)
+        if (result && result?.accessToken) {
+            localStorage.setItem('token', result?.accessToken);
+            setUser({
+                displayName: `${result?.firstname} ${result?.lastname}`,
+                email: result?.email
+            })
+            setIsAuthenticated(true)
+        }
     }
+
+    const profile = watch('profile')
+    useEffect(() => {
+        console.log(profile);
+    }, [profile])
 
     return (
         <Card className="mx-auto max-w-sm">
@@ -45,7 +72,7 @@ export default function LoginForm() {
                                 <SelectValue placeholder="Select profile" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="student">student</SelectItem>
+                                <SelectItem value="student" disabled>student</SelectItem>
                                 <SelectItem value="lecturer">lecturer</SelectItem>
                             </SelectContent>
                         </Select>
@@ -59,7 +86,7 @@ export default function LoginForm() {
                         </div>
                         <Input id="password" type="password" {...register("password")} required />
                     </div>
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" className="w-full" disabled={loading}>
                         Login
                     </Button>
                     <Button variant="outline" className="w-full">

@@ -14,8 +14,11 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import useAuthStore from "@/stores/authStore"
 
 export function UserNav() {
+    const { logout } = useAuthStore()
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -52,7 +55,7 @@ export function UserNav() {
                     <DropdownMenuItem>New Team</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => logout()}>
                     Log out
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>

@@ -1,13 +1,13 @@
 import type { FC, ReactNode } from 'react';
 import { useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import useAuthStore from '../stores/authStore';
 // import { onAuthStateChanged } from 'firebase/auth';
 // import { auth } from '../config';
 
 interface AuthGuardProps {
-    children: ReactNode;
+    children?: ReactNode;
 }
 
 const AuthGuard: FC<AuthGuardProps> = (props) => {
@@ -21,7 +21,7 @@ const AuthGuard: FC<AuthGuardProps> = (props) => {
             setRequestedLocation(location.pathname);
         }
 
-        return <Navigate to={'/auth/login'} />;
+        return <Navigate to={'/auth'} />;
     }
 
     // This is done so that in case the route changes by any chance through other
@@ -32,7 +32,7 @@ const AuthGuard: FC<AuthGuardProps> = (props) => {
         return <Navigate to={requestedLocation} />;
     }
 
-    return <>{children}</>;
+    return <>{children ? children : <Outlet />}</>;
 };
 
 AuthGuard.propTypes = {

@@ -13,6 +13,7 @@ import CreateDepartment from './pages/CreateDepartment';
 import ProfileHome from './pages/ProfileHome';
 import Courses from './pages/Courses';
 import TaskPage from './components/tasks';
+import Students from './pages/Students';
 
 
 const router = createBrowserRouter([
@@ -25,15 +26,11 @@ const router = createBrowserRouter([
         index: true,
         element: <AuthPage />
       },
-      {
-        path: 'login',
-        element: <AuthPage />
-      },
     ]
   },
   {
     path: '*',
-    element: (<AuthGuard><DashboardLayout /></AuthGuard>),
+    element: (<AuthGuard />),
     errorElement: <ErrorPage />,
     children: [
       {
@@ -41,29 +38,40 @@ const router = createBrowserRouter([
         element: <ProfileHome />
       },
       {
-        path: 'dashboard',
-        element: <Dashboard />
-      },
-      {
-        path: 'courses',
-        element: <Courses />
-      },
-      {
-        path: 'students',
-        element: <></>
-      },
-      {
-        path: 'results',
-        element: <></>
-      },
-      {
-        path: 'tasks',
-        element: <TaskPage />
-      },
-      {
         path: 'createDepartment',
         element: <CreateDepartment />
-      }
+      },
+      {
+        path: 'dashboard',
+        element: <DashboardLayout />,
+        children: [
+          {
+            index: true,
+            element: <Dashboard />
+          },
+          {
+            path: 'home',
+            element: <Dashboard />
+          },
+          {
+            path: 'courses',
+            element: <Courses />
+          },
+          {
+            path: 'students',
+            element: <Students />
+          },
+          {
+            path: 'results',
+            element: <></>
+          },
+          {
+            path: 'tasks',
+            element: <TaskPage />
+          },
+        ]
+      },
+      
     ]
   }
 ]);

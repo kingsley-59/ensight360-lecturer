@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "../dashboard/DataTable"
+import { Button } from "../ui/button"
 
 
 const sampleCourses = [
@@ -30,6 +31,15 @@ const columns: ColumnDef<typeof sampleCourses[0]>[] = [
     {
         accessorKey: 'semester',
         header: 'Semester'
+    },
+    {
+        id: 'actions',
+        header: 'Actions',
+        cell: () => {
+            return (
+                <Button variant={'outline'}>View</Button>
+            )
+        }
     }
 ]
 

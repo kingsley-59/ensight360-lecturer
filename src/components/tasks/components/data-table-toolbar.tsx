@@ -33,7 +33,7 @@ export function DataTableToolbar<TData>({
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter tasks..."
+          placeholder="Filter..."
           // value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           value={(table.getState()?.globalFilter as string) ?? ""}
           onChange={(event) =>

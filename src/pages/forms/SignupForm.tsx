@@ -1,3 +1,4 @@
+import { registerUser } from "@/api/user"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -10,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
 import useAuthStore from "@/stores/authStore"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 
@@ -24,25 +26,32 @@ interface SignupForm {
 export default function SignupForm() {
     const { toast } = useToast()
     const { register, handleSubmit } = useForm<SignupForm>();
-    const { setUser, setIsAuthenticated } = useAuthStore()
+    const { setUser, setIsAuthenticated } = useAuthStore();
+    const [loading, setLoading] = useState(false)
 
-    function formHandler(formData: SignupForm) {
+    async function formHandler(formData: SignupForm) {
+        console.log("submitted...")
+        setLoading(true);
         const { email, firstname, lastname, confirmPassword, password } = formData;
         if (password !== confirmPassword) {
-            console.log("not submitted...")
             toast({
                 title: "Form Error",
                 description: "Passwords do not match",
                 variant: "destructive"
             })
+            setLoading(false)
             return ;
         }
-        setUser({
-            displayName: `${firstname} ${lastname}`,
-            email
-        })
-        setIsAuthenticated(true)
-        console.log("submitted...")
+        const result = await registerUser({...formData}).finally(() => setLoading(false))
+        console.log('signup result', result)
+        if (result && result?.accessToken) {
+            localStorage.setItem('token', result?.accessToken);
+            setUser({
+                displayName: `${firstname} ${lastname}`,
+                email
+            })
+            setIsAuthenticated(true)
+        }   
     }
 
     return (
@@ -83,7 +92,7 @@ export default function SignupForm() {
                         <Label htmlFor="password">Confirm Password</Label>
                         <Input id="confirm-password" type="password" {...register('confirmPassword')} />
                     </div>
-                    <Button type="submit" variant='default' className="w-full">
+                    <Button type="submit" variant='default' className="w-full" disabled={loading}>
                         Create an account
                     </Button>
                 </form>
