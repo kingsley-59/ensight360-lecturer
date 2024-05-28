@@ -1,3 +1,4 @@
+import CreateDepartmentDialog from "@/components/dialogs/CreateDepartmentDialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -50,7 +51,9 @@ export default function ProfileHome() {
                         <Card className="w-full max-w-sm">
                             <CardHeader ></CardHeader>
                             <CardContent className="flex flex-col items-center cursor-pointer">
-                                <Link to={'/createDepartment'}><Plus size={95} className="text-blue-700" /></Link>
+                                <CreateDepartmentDialog>
+                                    <Plus size={95} className="text-blue-700" />
+                                </CreateDepartmentDialog>
                                 <div className="text-blue-500 text-base">Add department</div>
                             </CardContent>
                             {/* <CardFooter className="grid text-sm"></CardFooter> */}

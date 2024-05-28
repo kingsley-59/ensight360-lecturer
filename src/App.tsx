@@ -9,7 +9,6 @@ import Dashboard from './pages/Dashboard';
 import AuthGuard from './layouts/AuthGuard';
 import DashboardLayout from './layouts/DashboardLayout';
 import { Toaster } from './components/ui/toaster';
-import CreateDepartment from './pages/CreateDepartment';
 import ProfileHome from './pages/ProfileHome';
 import Courses from './pages/Courses';
 import TaskPage from './components/tasks';
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <ProfileHome />
-      },
-      {
-        path: 'createDepartment',
-        element: <CreateDepartment />
       },
       {
         path: 'dashboard',
