@@ -15,8 +15,9 @@ export enum UserRole {
 
 interface Model {
     _id: string,
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt: string,
+    updatedAt: string,
+    __v?: number
 }
 
 export interface User extends Model {
@@ -39,17 +40,20 @@ export interface Profile extends Model {
     dob: string,
 }
 
-export interface Lecturer extends Profile {}
+export interface Lecturer extends Profile { }
 
-export interface Student extends Profile {}
+export interface Student extends Profile { }
 
 export interface Department extends Model {
-    name: string,
-    short: string,
-    faculty: string,
-    institution: string,
-    headOfDepartment: Lecturer,
-    lecturers: Lecturer[]
+    name: string
+    code: string
+    faculty: string
+    isPublic: boolean
+    institution: string
+    institutionCode: string
+    headOfDepartment: string
+    lecturers: string[]
+    students: string[]
 }
 
 export interface Class extends Model {

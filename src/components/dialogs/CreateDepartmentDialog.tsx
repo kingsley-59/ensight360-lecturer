@@ -1,17 +1,27 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "../ui/checkbox";
+import { ICreateDepartmentOptions, createDepartment } from "@/api/department";
+import { useDepartmentState } from "@/stores";
 
 
 export default function CreateDepartmentDialog({ children }: { children: ReactNode }) {
-    const { register, handleSubmit } = useForm()
+    const { register, setValue, handleSubmit } = useForm<ICreateDepartmentOptions>()
+    const { refreshList } = useDepartmentState()
+    const [loading, setLoading] = useState(false)
 
-    function formHandler() {
+    async function formHandler(formData: ICreateDepartmentOptions) {
+        setLoading(true)
+        const result = await createDepartment({ ...formData }).finally(() => setLoading(false))
 
+        if (result) {
+            console.log('new dept result', result)
+            refreshList()
+        }
     }
 
     return (
@@ -27,8 +37,8 @@ export default function CreateDepartmentDialog({ children }: { children: ReactNo
                             <Input type="text" placeholder="e.g. Mechanical Engineering" {...register("name")} required />
                         </div>
                         <div className="grid gap-2">
-                            <Label>Short</Label>
-                            <Input type="text" placeholder="e.g. MEE" {...register("short")} required />
+                            <Label>Code</Label>
+                            <Input type="text" placeholder="e.g. MEE" {...register("code")} required />
                         </div>
                         <div className="grid gap-2">
                             <Label>Faculty</Label>
@@ -39,15 +49,15 @@ export default function CreateDepartmentDialog({ children }: { children: ReactNo
                             <Input type="text" placeholder="e.g. Federal University of Technology, Owerri" {...register("institution")} required />
                         </div>
                         <div className="grid gap-2">
-                            <Label>Institution Short</Label>
-                            <Input type="text" placeholder="e.g. FUTO" {...register("InstitutionShort")} required />
+                            <Label>Institution Code</Label>
+                            <Input type="text" placeholder="e.g. FUTO" {...register("institutionCode")} required />
                         </div>
                         <div className="flex gap-2">
-                            <Checkbox id="makePublit" {...register("makePublic")} />
-                            <Label htmlFor="makePublit">Make department public</Label>
+                            <Checkbox id="makePublic" onCheckedChange={(checked) => setValue('isPublic', checked as boolean)} />
+                            <Label htmlFor="makePublic">Make department public</Label>
                         </div>
-                        <Button type="submit" variant='default' className="w-full">
-                            Create an account
+                        <Button type="submit" variant='default' className="w-full" disabled={loading}>
+                            Create department
                         </Button>
                     </form>
                 </DialogHeader>

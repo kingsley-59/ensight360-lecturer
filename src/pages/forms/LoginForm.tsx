@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useDepartmentState } from "@/stores"
 import useAuthStore from "@/stores/authStore"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -24,11 +25,12 @@ interface LoginForm {
 export default function LoginForm() {
     const { register, setValue, watch, handleSubmit } = useForm<LoginForm>()
     const { setUser, setIsAuthenticated } = useAuthStore()
+    const { refreshList } = useDepartmentState()
     const [loading, setLoading] = useState(false)
 
     async function formHandler(formData: LoginForm) {
         setLoading(true)
-        const result = await loginUser({...formData}).finally(() => setLoading(false))
+        const result = await loginUser({ ...formData }).finally(() => setLoading(false))
         console.log('login result', result)
         if (result && result?.accessToken) {
             localStorage.setItem('token', result?.accessToken);
@@ -37,6 +39,7 @@ export default function LoginForm() {
                 email: result?.email
             })
             setIsAuthenticated(true)
+            refreshList()
         }
     }
 

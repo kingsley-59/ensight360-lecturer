@@ -1,20 +1,27 @@
+import { ICreateDepartmentOptions, createDepartment } from "@/api/department";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 
 
 
 
-
 export default function CreateDepartment() {
-    const { register, handleSubmit } = useForm()
+    const { register, handleSubmit } = useForm<ICreateDepartmentOptions>()
+    const [loading, setLoading] = useState(false)
 
-    function formHandler() {
-
+    async function formHandler(formData: ICreateDepartmentOptions) {
+        setLoading(true)
+        const result = await createDepartment({...formData}).finally(() => setLoading(false))
+        
+        if (result) {
+            console.log('new dept result', result)
+        }
     }
 
     return (
@@ -47,13 +54,13 @@ export default function CreateDepartment() {
                             </div>
                             <div className="grid gap-2">
                                 <Label>Institution Short</Label>
-                                <Input type="text" placeholder="e.g. FUTO" {...register("InstitutionShort")} required />
+                                <Input type="text" placeholder="e.g. FUTO" {...register("institutionCode")} required />
                             </div>
                             <div className="flex gap-2">
-                                <Checkbox {...register("makePublic")} />
+                                <Checkbox {...register("isPublic")} />
                                 <Label>Make department public</Label>
                             </div>
-                            <Button type="submit" variant='default' className="w-full">
+                            <Button type="submit" variant='default' className="w-full" disabled={loading}>
                                 Create an account
                             </Button>
                         </form>

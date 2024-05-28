@@ -2,8 +2,10 @@ import CreateDepartmentDialog from "@/components/dialogs/CreateDepartmentDialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { useDepartmentState } from "@/stores"
 import useAuthStore from "@/stores/authStore"
 import { Plus, Settings } from "lucide-react"
+import { useEffect } from "react"
 import { Link } from "react-router-dom"
 
 
@@ -24,13 +26,20 @@ function Logo({ variant = "light" }: { variant?: "light" | "dark" }) {
     )
 }
 
-const sampleDepartments = [
-    { name: "Mechanical Engineering", short: "MEE", faculty: "Faculty of Engineering", institution: 'FUTO' },
-    { name: "Civil Engineering", short: "CIE", faculty: "Faculty of Engineering", institution: 'FUTO' },
-]
+// const sampleDepartments = [
+//     { name: "Mechanical Engineering", short: "MEE", faculty: "Faculty of Engineering", institution: 'FUTO' },
+//     { name: "Civil Engineering", short: "CIE", faculty: "Faculty of Engineering", institution: 'FUTO' },
+// ]
 
 export default function ProfileHome() {
-    const { user } = useAuthStore()
+    const { user, logout } = useAuthStore()
+    const { departmentList, refreshList } = useDepartmentState()
+
+    useEffect(() => {
+        refreshList()
+    }, [refreshList]);
+
+    useEffect(() => console.log(departmentList), [departmentList])
 
     return (
         <div className="w-full _h-screen rounded-md relative">
@@ -41,11 +50,16 @@ export default function ProfileHome() {
                 <div className="w-full p-3 sticky">
                     <Logo />
                 </div>
-                <div className="w-full max-w-screen-xl mx-auto md:p-10 lg:p-20 grid gap-3 ">
-                    <div className="w-full bg-white rounded-lg p-3 ">
-                        <div className="text-xl font-semibold">Welcome back!</div>
-                        <div className="text-2xl font-bold mb-5">{user?.displayName}</div>
-                        <div className="text-base font-semibold">Here's your list of departments below:</div>
+                <div className="w-full max-w-screen-xl mx-auto p-5 md:p-10 lg:p-20 grid gap-3 ">
+                    <div className="w-full md:flex justify-between bg-white rounded-lg p-3 ">
+                        <div className="w-full">
+                            <div className="text-xl font-semibold">Welcome back!</div>
+                            <div className="text-2xl font-bold mb-5">{user?.displayName}</div>
+                            <div className="text-base font-semibold">Here's your list of departments below:</div>
+                        </div>
+                        <div>
+                            <Button variant={'outline'} className="px-3 py-2 " onClick={() => logout()}>Log out</Button>
+                        </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-5">
                         <Card className="w-full max-w-sm">
@@ -59,15 +73,15 @@ export default function ProfileHome() {
                             {/* <CardFooter className="grid text-sm"></CardFooter> */}
                         </Card>
 
-                        {sampleDepartments.map(dept => (
-                            <Link to={'/dashboard'}>
+                        {departmentList.map(dept => (
+                            <Link to={'/dashboard'} key={dept.code}>
                                 <Card className="w-full max-w-sm ">
                                     <CardHeader >
                                         <CardDescription className="flex justify-between items-center cursor-pointer">
                                             {dept.name}
                                             <Settings size={30} />
                                         </CardDescription>
-                                        <CardTitle className="text-xl">{dept.short}</CardTitle>
+                                        <CardTitle className="text-xl">{dept.code}</CardTitle>
                                     </CardHeader>
                                     <CardContent >
 
