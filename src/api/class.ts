@@ -34,7 +34,7 @@ export async function inviteLecturerToDepartment(classId: string, payload: Class
 
 export async function getAllDepartmentClasses(departmentId: string) {
     try {
-        const {data, status} = await axiosInstance.get('/class'+departmentId);
+        const {data, status} = await axiosInstance.get('/class/'+departmentId);
         if (status == 200) {
             return data.data
         } else {

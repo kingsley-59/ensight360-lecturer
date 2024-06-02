@@ -7,9 +7,17 @@ import {
 } from "@/components/ui/tabs"
 import LoginForm from "./forms/LoginForm"
 import SignupForm from "./forms/SignupForm"
+import useAuthStore from "@/stores/authStore";
+import { Navigate } from "react-router-dom";
 
 
 export default function AuthPage() {
+
+    const { isAuthenticated } = useAuthStore();
+
+    if (isAuthenticated && localStorage.getItem('ensi-36o_token')) {
+        return <Navigate to='/' />;
+    }
 
     return (
         <div className="w-full h-full flex flex-col justify-center items-center bg-secondary">

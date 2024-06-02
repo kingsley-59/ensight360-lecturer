@@ -59,6 +59,7 @@ export interface Department extends Model {
 export interface Class extends Model {
     name: string,
     session: string,
+    studentCount: number,
     department: string,
     classAdviser: Lecturer,
     hod: Lecturer

@@ -1,7 +1,6 @@
 
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
-import GuestGuard from './layouts/GuestGuard';
 import AuthLayout from './layouts/AuthLayout';
 import ErrorPage from './pages/ErrorPage';
 import AuthPage from './pages/AuthPage';
@@ -18,7 +17,7 @@ import Students from './pages/Students';
 const router = createBrowserRouter([
   {
     path: 'auth',
-    element: (<GuestGuard><AuthLayout /></GuestGuard>),
+    element: <AuthLayout />,
     errorElement: <ErrorPage />,
     children: [
       {

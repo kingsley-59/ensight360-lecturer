@@ -5,7 +5,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { CreateClass, createClass } from "@/api/class";
-import { useDepartmentState } from "@/stores";
+import { useClassState, useDepartmentState } from "@/stores";
 import { toast } from "../ui/use-toast";
 
 
@@ -13,6 +13,7 @@ import { toast } from "../ui/use-toast";
 
 export default function CreateClassDialog({ children }: { children: ReactNode }) {
     const { currentDepartment } = useDepartmentState()
+    const {refreshClassList} = useClassState()
     const { register, handleSubmit } = useForm<CreateClass>({
         defaultValues: {
             departmentId: currentDepartment?._id
@@ -30,8 +31,11 @@ export default function CreateClassDialog({ children }: { children: ReactNode })
             })
         }
         setLoading(true)
-        const res = await createClass(data).finally(() => setLoading(false));
-        console.log(res);
+        const result = await createClass(data).finally(() => setLoading(false));
+        if (result) {
+            console.log('new class', result)
+            refreshClassList(data.departmentId)
+        }
     }
 
     return (

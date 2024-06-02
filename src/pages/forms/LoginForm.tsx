@@ -24,7 +24,7 @@ interface LoginForm {
 
 export default function LoginForm() {
     const { register, setValue, watch, handleSubmit } = useForm<LoginForm>()
-    const { setUser, setIsAuthenticated } = useAuthStore()
+    const { setUser, setIsAuthenticated, setToken } = useAuthStore()
     const { refreshList } = useDepartmentState()
     const [loading, setLoading] = useState(false)
 
@@ -33,12 +33,13 @@ export default function LoginForm() {
         const result = await loginUser({ ...formData }).finally(() => setLoading(false))
         console.log('login result', result)
         if (result && result?.accessToken) {
-            localStorage.setItem('token', result?.accessToken);
+            localStorage.setItem('ensi-36o_token', result?.accessToken);
             setUser({
                 displayName: `${result?.firstname} ${result?.lastname}`,
                 email: result?.email
             })
             setIsAuthenticated(true)
+            setToken(result?.accessToken)
             refreshList()
         }
     }

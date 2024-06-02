@@ -13,6 +13,8 @@ interface User {
 }
 
 type AuthState = {
+    token: string | null,
+    setToken: (token: string) => void;
     isAuthenticated: boolean;
     setIsAuthenticated: (isAuthenticated: boolean) => void;
     user: User | null;
@@ -26,6 +28,10 @@ const useAuthStore = create<AuthState>()(
     devtools(
         persist(
             (set) => ({
+                token: localStorage.getItem('ensi-36o_token'),
+                setToken: (token: string) => {
+                    set((state) => ({ ...state, token }));
+                },
                 isAuthenticated: false,
                 setIsAuthenticated: (isAuthenticated: boolean) => {
                     set((state) => ({ ...state, isAuthenticated }));
@@ -51,7 +57,8 @@ const useAuthStore = create<AuthState>()(
                 //     }));
                 // },
                 logout: async () => {
-                    set((state) => ({ ...state, user: null, isAuthenticated: false }))
+                    set((state) => ({ ...state, user: null, token: null, isAuthenticated: false }))
+                    localStorage.removeItem('ensi-36o_token')
                 },
             }),
             {

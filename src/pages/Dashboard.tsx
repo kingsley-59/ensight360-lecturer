@@ -19,19 +19,22 @@ import ClassesTable from "@/components/data-tables/ClassesTable"
 import { PlusIcon } from "lucide-react"
 import CreateClassDialog from "@/components/dialogs/CreateClassDialog"
 import { useEffect } from "react"
-import { useDepartmentState } from "@/stores"
+import { useClassState, useDepartmentState } from "@/stores"
 import { useNavigate } from "react-router-dom"
 
 
 export default function DashboardPage() {
     const navigate = useNavigate()
     const { currentDepartment } = useDepartmentState()
+    const { refreshClassList } = useClassState()
 
     useEffect(() => {
         if (!currentDepartment) {
             navigate("/")
+        } else {
+            refreshClassList(currentDepartment?._id)
         }
-    }, [currentDepartment, navigate])
+    }, [currentDepartment, navigate, refreshClassList])
 
     return (
         <>
