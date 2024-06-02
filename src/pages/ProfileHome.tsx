@@ -6,7 +6,7 @@ import { useDepartmentState } from "@/stores"
 import useAuthStore from "@/stores/authStore"
 import { Plus, Settings } from "lucide-react"
 import { useEffect } from "react"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 
 function Logo({ variant = "light" }: { variant?: "light" | "dark" }) {
@@ -33,7 +33,8 @@ function Logo({ variant = "light" }: { variant?: "light" | "dark" }) {
 
 export default function ProfileHome() {
     const { user, logout } = useAuthStore()
-    const { departmentList, refreshList } = useDepartmentState()
+    const { setCurrentDepartment, departmentList, refreshList } = useDepartmentState()
+    const navigate = useNavigate()
 
     useEffect(() => {
         refreshList()
@@ -74,24 +75,25 @@ export default function ProfileHome() {
                         </Card>
 
                         {departmentList.map(dept => (
-                            <Link to={'/dashboard'} key={dept.code}>
-                                <Card className="w-full max-w-sm ">
-                                    <CardHeader >
-                                        <CardDescription className="flex justify-between items-center cursor-pointer">
-                                            {dept.name}
-                                            <Settings size={30} />
-                                        </CardDescription>
-                                        <CardTitle className="text-xl">{dept.code}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent >
+                            <Card className="w-full max-w-sm " onClick={() => {
+                                setCurrentDepartment(dept)
+                                navigate('/dashboard')
+                            }}>
+                                <CardHeader >
+                                    <CardDescription className="flex justify-between items-center cursor-pointer">
+                                        {dept.name}
+                                        <Settings size={30} />
+                                    </CardDescription>
+                                    <CardTitle className="text-xl">{dept.code}</CardTitle>
+                                </CardHeader>
+                                <CardContent >
 
-                                    </CardContent>
-                                    <CardFooter className="grid text-sm">
-                                        <div>{dept.faculty}</div>
-                                        <div>{dept.institution}</div>
-                                    </CardFooter>
-                                </Card>
-                            </Link>
+                                </CardContent>
+                                <CardFooter className="grid text-sm">
+                                    <div>{dept.faculty}</div>
+                                    <div>{dept.institution}</div>
+                                </CardFooter>
+                            </Card>
                         ))}
                     </div>
 

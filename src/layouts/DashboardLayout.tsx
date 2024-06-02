@@ -1,7 +1,7 @@
 
+import DeptSwitcher from '@/components/dashboard/DeptSwitcher';
 import { MainNav } from '@/components/dashboard/MainNav';
 import { Search } from '@/components/dashboard/Search';
-import TeamSwitcher from '@/components/dashboard/TeamSwitcher';
 import { UserNav } from '@/components/dashboard/UserNav';
 import { Outlet } from 'react-router-dom';
 
@@ -28,7 +28,7 @@ export default function DashboardLayout() {
       <div className="hidden flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
-            <TeamSwitcher />
+            <DeptSwitcher />
             <MainNav className="mx-6" />
             <div className="ml-auto flex items-center space-x-4">
               <Search />

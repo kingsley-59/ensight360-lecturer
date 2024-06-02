@@ -18,9 +18,21 @@ import { DeptRegistry } from "@/components/dashboard/DeptRegistry"
 import ClassesTable from "@/components/data-tables/ClassesTable"
 import { PlusIcon } from "lucide-react"
 import CreateClassDialog from "@/components/dialogs/CreateClassDialog"
+import { useEffect } from "react"
+import { useDepartmentState } from "@/stores"
+import { useNavigate } from "react-router-dom"
 
 
 export default function DashboardPage() {
+    const navigate = useNavigate()
+    const { currentDepartment } = useDepartmentState()
+
+    useEffect(() => {
+        if (!currentDepartment) {
+            navigate("/")
+        }
+    }, [currentDepartment, navigate])
+
     return (
         <>
             <div className="flex-1 space-y-4 p-8 pt-6">
