@@ -19,7 +19,7 @@ export default function CreateCourseDialog({ children }: { children: ReactNode }
     const { refreshCourseList } = useCourseState()
     const { register, handleSubmit } = useForm<CreateCourse>({
         defaultValues: {
-            coordinator: user?._id,
+            coordinator: user?.profile._id,
             departmentId: currentDepartment?._id
         }
     });
@@ -91,7 +91,7 @@ export default function CreateCourseDialog({ children }: { children: ReactNode }
                         <Input id="" placeholder="e.g. Mechanical Engineering" value={currentDepartment?.name} readOnly />
                     </div>
                     <Button type="submit" variant='default' className="w-full" disabled={loading}>
-                        Create new class
+                        Create new course
                     </Button>
                 </form>
             </DialogContent>

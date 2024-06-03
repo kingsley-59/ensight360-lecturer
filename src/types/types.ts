@@ -29,6 +29,7 @@ export interface User extends Model {
     googleId?: string,
     status: UserStatus,
     role: UserRole,
+    profile: Profile,
 }
 
 export interface Profile extends Model {

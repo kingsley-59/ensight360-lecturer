@@ -1,5 +1,6 @@
 import ClassesTable from "@/components/data-tables/ClassesTable";
 import StudentsTable from "@/components/data-tables/StudentsTable";
+import EnrollStudentDialog from "@/components/dialogs/EnrollStudentDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useClassState } from "@/stores";
@@ -16,9 +17,9 @@ export default function Students() {
         <div className="container space-y-4">
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Students</h2>
-                <div className="flex items-center space-x-2">
+                <EnrollStudentDialog>
                     <Button variant={'default'} className="flex gap-2 text-base">Enroll Student</Button>
-                </div>
+                </EnrollStudentDialog>
             </div>
             <Card className="col-span-4">
                 <CardHeader >
