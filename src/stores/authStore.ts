@@ -1,3 +1,4 @@
+import { User } from "@/types/types";
 import { create } from "zustand";
 import { persist, devtools } from "zustand/middleware";
 // import { User, getAdditionalUserInfo, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
@@ -5,12 +6,12 @@ import { persist, devtools } from "zustand/middleware";
 // import { toast } from 'react-toastify'
 
 
-interface User {
-    displayName: string,
-    photoUrl?: string,
-    email: string,
-    getIdToken?: () => Promise<string>
-}
+// interface User {
+//     displayName: string,
+//     photoUrl?: string,
+//     email: string,
+//     getIdToken?: () => Promise<string>
+// }
 
 type AuthState = {
     token: string | null,

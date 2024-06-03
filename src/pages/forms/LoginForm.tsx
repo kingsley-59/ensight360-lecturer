@@ -34,10 +34,7 @@ export default function LoginForm() {
         console.log('login result', result)
         if (result && result?.accessToken) {
             localStorage.setItem('ensi-36o_token', result?.accessToken);
-            setUser({
-                displayName: `${result?.firstname} ${result?.lastname}`,
-                email: result?.email
-            })
+            setUser(result)
             setIsAuthenticated(true)
             setToken(result?.accessToken)
             refreshList()

@@ -3,9 +3,18 @@ import DeptSwitcher from '@/components/dashboard/DeptSwitcher';
 import { MainNav } from '@/components/dashboard/MainNav';
 import { Search } from '@/components/dashboard/Search';
 import { UserNav } from '@/components/dashboard/UserNav';
+import { useDepartmentState } from '@/stores';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
 export default function DashboardLayout() {
+  const { departmentList, refreshList } = useDepartmentState()
+
+  useEffect(() => {
+    if (!departmentList.length) {
+      refreshList()
+    }
+  }, [departmentList.length, refreshList])
 
   return (
     <>

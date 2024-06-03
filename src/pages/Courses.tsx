@@ -1,5 +1,6 @@
 import CoursesTable from "@/components/data-tables/CoursesTable";
 import StudentsTable from "@/components/data-tables/StudentsTable";
+import CreateCourseDialog from "@/components/dialogs/CreateCourseDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -101,9 +102,9 @@ export default function Courses() {
         <div className="container space-y-4">
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Courses</h2>
-                <div className="flex items-center space-x-2">
+                <CreateCourseDialog>
                     <Button variant={'default'} className="flex gap-2 text-base">Create Course</Button>
-                </div>
+                </CreateCourseDialog>
             </div>
             <Card className="col-span-4">
                 <CardContent className="pt-4">

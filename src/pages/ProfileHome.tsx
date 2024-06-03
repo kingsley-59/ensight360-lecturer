@@ -55,7 +55,7 @@ export default function ProfileHome() {
                     <div className="w-full md:flex justify-between bg-white rounded-lg p-3 ">
                         <div className="w-full">
                             <div className="text-xl font-semibold">Welcome back!</div>
-                            <div className="text-2xl font-bold mb-5">{user?.displayName}</div>
+                            <div className="text-2xl font-bold mb-5">{user?.firstname}</div>
                             <div className="text-base font-semibold">Here's your list of departments below:</div>
                         </div>
                         <div>

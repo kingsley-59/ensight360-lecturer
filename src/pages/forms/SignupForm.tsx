@@ -32,7 +32,7 @@ export default function SignupForm() {
     async function formHandler(formData: SignupForm) {
         console.log("submitted...")
         setLoading(true);
-        const { email, firstname, lastname, confirmPassword, password } = formData;
+        const { confirmPassword, password } = formData;
         if (password !== confirmPassword) {
             toast({
                 title: "Form Error",
@@ -46,10 +46,7 @@ export default function SignupForm() {
         console.log('signup result', result)
         if (result && result?.accessToken) {
             localStorage.setItem('token', result?.accessToken);
-            setUser({
-                displayName: `${firstname} ${lastname}`,
-                email
-            })
+            setUser(result)
             setIsAuthenticated(true)
         }   
     }

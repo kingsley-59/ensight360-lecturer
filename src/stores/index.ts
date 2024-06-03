@@ -1,7 +1,9 @@
 import { getAllDepartmentClasses } from "@/api/class";
+import { getAllDepartmentCourses } from "@/api/course";
 import { getAllDepartments } from "@/api/department";
-import { Class, Department } from "@/types/types";
+import { Class, Course, Department } from "@/types/types";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface ClassState {
     currentClass: string | Class | null,
@@ -26,6 +28,29 @@ export const useClassState = create<ClassState>((set) => ({
     }
 }))
 
+interface CourseState {
+    currentCourse: Course | null,
+    setCurrentCourse: (currCourse: Course) => void,
+    courseList: Course[],
+    refreshCourseList: (department: string) => void,
+}
+
+export const useCourseState = create<CourseState>((set) => ({
+    currentCourse: null,
+    setCurrentCourse: (currCourse) => set((state) => ({
+        ...state, currentCourse: currCourse,
+    })),
+    courseList: [],
+    refreshCourseList: async (department) => {
+        const results = await getAllDepartmentCourses(department);
+        if (Array.isArray(results) && results.length) {
+            set((state) => ({
+                ...state, courseList: results
+            }))
+        }
+    }
+}))
+
 interface DepartmentState {
     currentDepartment: Department | null,
     setCurrentDepartment: (dept: Department) => void
@@ -33,18 +58,26 @@ interface DepartmentState {
     refreshList: () => void,
 }
 
-export const useDepartmentState = create<DepartmentState>((set) => ({
-    currentDepartment: null,
-    departmentList: [],
-    setCurrentDepartment: (dept) => set((state) => ({
-        ...state, currentDepartment: dept,
-    })),
-    refreshList: async () => {
-        const results = await getAllDepartments();
-        if (Array.isArray(results) && results.length) {
-            set((state) => ({
-                ...state, departmentList: results
-            }))
+export const useDepartmentState = create<DepartmentState>()(
+    persist(
+        (set) => ({
+            currentDepartment: null,
+            departmentList: [],
+            setCurrentDepartment: (dept) => set((state) => ({
+                ...state, currentDepartment: dept,
+            })),
+            refreshList: async () => {
+                const results = await getAllDepartments();
+                if (Array.isArray(results) && results.length) {
+                    set((state) => ({
+                        ...state, departmentList: results
+                    }))
+                }
+            }
+        }),
+        {
+            name: 'dept-storage',
+            getStorage: () => localStorage, // or sessionStorage
         }
-    }
-}))
+    )
+)
