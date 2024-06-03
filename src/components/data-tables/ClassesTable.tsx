@@ -2,8 +2,9 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
 import { DataTable } from '../dashboard/DataTable';
 import { Button } from '../ui/button';
-import { useClassState } from '@/stores';
+import { useClassState, useDepartmentState } from '@/stores';
 import { Class } from '@/types/types';
+import { useEffect } from 'react';
 
 
 // const sampleClass = [
@@ -50,7 +51,14 @@ const columns: ColumnDef<Class>[] = [
 
 
 export default function ClassesTable() {
-    const { classList } = useClassState()
+    const { currentDepartment } = useDepartmentState()
+    const { classList, refreshClassList } = useClassState()
+
+    useEffect(() => {
+        if (!classList.length && currentDepartment?._id) {
+            refreshClassList(currentDepartment._id)
+        }
+    }, [classList.length, currentDepartment?._id, refreshClassList])
 
     return (
         <div className="container !px-0 mx-auto ">

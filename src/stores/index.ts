@@ -5,6 +5,38 @@ import { Class, Course, Department } from "@/types/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+
+interface DepartmentState {
+    currentDepartment: Department | null,
+    setCurrentDepartment: (dept: Department) => void
+    departmentList: Department[],
+    refreshList: () => void,
+}
+
+export const useDepartmentState = create<DepartmentState>()(
+    persist(
+        (set) => ({
+            currentDepartment: null,
+            departmentList: [],
+            setCurrentDepartment: (dept) => set((state) => ({
+                ...state, currentDepartment: dept,
+            })),
+            refreshList: async () => {
+                const results = await getAllDepartments();
+                if (Array.isArray(results) && results.length) {
+                    set((state) => ({
+                        ...state, departmentList: results
+                    }))
+                }
+            }
+        }),
+        {
+            name: 'dept-storage',
+            getStorage: () => localStorage, // or sessionStorage
+        }
+    )
+)
+
 interface ClassState {
     currentClass: string | Class | null,
     setCurrentClass: (currClass: Class | string) => void,
@@ -51,33 +83,3 @@ export const useCourseState = create<CourseState>((set) => ({
     }
 }))
 
-interface DepartmentState {
-    currentDepartment: Department | null,
-    setCurrentDepartment: (dept: Department) => void
-    departmentList: Department[],
-    refreshList: () => void,
-}
-
-export const useDepartmentState = create<DepartmentState>()(
-    persist(
-        (set) => ({
-            currentDepartment: null,
-            departmentList: [],
-            setCurrentDepartment: (dept) => set((state) => ({
-                ...state, currentDepartment: dept,
-            })),
-            refreshList: async () => {
-                const results = await getAllDepartments();
-                if (Array.isArray(results) && results.length) {
-                    set((state) => ({
-                        ...state, departmentList: results
-                    }))
-                }
-            }
-        }),
-        {
-            name: 'dept-storage',
-            getStorage: () => localStorage, // or sessionStorage
-        }
-    )
-)
