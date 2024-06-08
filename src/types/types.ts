@@ -13,6 +13,13 @@ export enum UserRole {
     SUPERADMIN = 'superadmin',
 }
 
+export enum EnrollmentStatus {
+    PENDING = 'Pending',
+    ACTIVE = 'Active',
+    DROPPED = 'Dropped',
+    WITHDRAWN = 'Withdrawn',
+}
+
 interface Model {
     _id: string,
     createdAt: string,
@@ -75,7 +82,7 @@ export interface DepartmentRegistry extends Model {
 }
 
 export interface Assessment {
-    course: string,
+    _id?: string,
     name: string,
     maxScore: number,
 }
@@ -83,10 +90,24 @@ export interface Assessment {
 export interface Course {
     title: string,
     code: string,
+    description?: string,
     units: number,
     hasPractical: boolean,
+    level: number,
+    semester: string,
     cordinator: Lecturer,
     createdBy: Lecturer,
-    department: Department,
+    department: string,
     assessments: Assessment[]
 }
+
+export interface Enrollment extends Model {
+    student: Student,
+    enrolledBy: Lecturer,
+    class: string,
+    department: string,
+    registrationName: string,
+    registrationNumber: string,
+    enrollmentDate: string,
+    emrollmentStatus: EnrollmentStatus
+} 

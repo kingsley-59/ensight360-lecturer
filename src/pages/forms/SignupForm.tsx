@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
+import { useDepartmentState } from "@/stores"
 import useAuthStore from "@/stores/authStore"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -26,7 +27,8 @@ interface SignupForm {
 export default function SignupForm() {
     const { toast } = useToast()
     const { register, handleSubmit } = useForm<SignupForm>();
-    const { setUser, setIsAuthenticated } = useAuthStore();
+    const { setUser, setIsAuthenticated, setToken } = useAuthStore()
+    const { refreshList } = useDepartmentState()
     const [loading, setLoading] = useState(false)
 
     async function formHandler(formData: SignupForm) {
@@ -45,9 +47,11 @@ export default function SignupForm() {
         const result = await registerUser({...formData}).finally(() => setLoading(false))
         console.log('signup result', result)
         if (result && result?.accessToken) {
-            localStorage.setItem('token', result?.accessToken);
+            localStorage.setItem('ensi-36o_token', result?.accessToken);
             setUser(result)
             setIsAuthenticated(true)
+            setToken(result?.accessToken)
+            refreshList()
         }   
     }
 

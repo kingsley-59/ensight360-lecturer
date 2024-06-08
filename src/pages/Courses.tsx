@@ -4,24 +4,38 @@ import CreateCourseDialog from "@/components/dialogs/CreateCourseDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useCourseState, useDepartmentState } from "@/stores";
+import { Course } from "@/types/types";
 import { FileIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect } from "react";
 
 
-function CourseSummaryTab() {
+function CourseSummaryTab({ course }: { course: Course }) {
 
     return (
         <div className="p-6 space-y-6">
             <div>
-                <h2 className="text-xl font-semibold">Introduction to Computer Science</h2>
-                <p className="text-gray-500 dark:text-gray-400">CS101</p>
+                <h2 className="text-xl font-semibold">{course.title}</h2>
+                <p className="text-gray-500 dark:text-gray-400">{course.code}</p>
             </div>
             <div>
-                <h3 className="text-lg font-medium">Course Syllabus</h3>
+                <h3 className="text-lg font-medium">Course Description</h3>
                 <p className="text-gray-500 dark:text-gray-400">
-                    This course provides an introduction to the fundamental concepts of computer science, including
-                    algorithms, data structures, and programming languages.
+                    {course?.description}
                 </p>
+            </div>
+            <div>
+                <h3 className="text-lg font-medium">Assessments</h3>
+                <ul className="space-y-2">
+                    {course.assessments.map((assessment) => (
+                        <li key={assessment?._id}>
+                            <div className="flex items-center justify-between">
+                                <span>{assessment.name}</span>
+                                <span className="text-gray-500 dark:text-gray-400">{assessment.maxScore}%</span>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
             </div>
             <div>
                 <h3 className="text-lg font-medium">Course Materials</h3>
@@ -55,29 +69,7 @@ function CourseSummaryTab() {
                     </li>
                 </ul>
             </div>
-            <div>
-                <h3 className="text-lg font-medium">Assessments</h3>
-                <ul className="space-y-2">
-                    <li>
-                        <div className="flex items-center justify-between">
-                            <span>Midterm Exam</span>
-                            <span className="text-gray-500 dark:text-gray-400">30%</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div className="flex items-center justify-between">
-                            <span>Final Exam</span>
-                            <span className="text-gray-500 dark:text-gray-400">40%</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div className="flex items-center justify-between">
-                            <span>Programming Assignments</span>
-                            <span className="text-gray-500 dark:text-gray-400">30%</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            
         </div>
     )
 }
@@ -96,7 +88,12 @@ function StudentManagementTab() {
 }
 
 export default function Courses() {
-    const [selectedCourse, ] = useState('jjj')
+    const { currentDepartment } = useDepartmentState()
+    const { courseList, refreshCourseList, currentCourse } = useCourseState()
+
+    useEffect(() => {
+        if (currentDepartment?._id) refreshCourseList(currentDepartment?._id)
+    }, [currentDepartment?._id, refreshCourseList])
 
     return (
         <div className="container space-y-4">
@@ -106,6 +103,17 @@ export default function Courses() {
                     <Button variant={'default'} className="flex gap-2 text-base">Create Course</Button>
                 </CreateCourseDialog>
             </div>
+            <Card className="col-span-4">
+                <CardHeader>
+                    <CardTitle className="flex justify-between items-center">
+                        List of all courses
+                    </CardTitle>
+                    <CardDescription>Select one to view details above</CardDescription>
+                </CardHeader>
+                <CardContent className="">
+                    <CoursesTable data={courseList} />
+                </CardContent>
+            </Card>
             <Card className="col-span-4">
                 <CardContent className="pt-4">
                     <Tabs defaultValue="details" className="space-y-4">
@@ -120,8 +128,8 @@ export default function Courses() {
                             </TabsTrigger> */}
                         </TabsList>
                         <TabsContent value="details" className="space-y-4">
-                            {(selectedCourse) ? (
-                                <CourseSummaryTab />
+                            {(currentCourse) ? (
+                                <CourseSummaryTab course={currentCourse} />
                             ) : (
                                 <div className="w-full h-24 text-center">
                                     Select a course to see details
@@ -129,7 +137,7 @@ export default function Courses() {
                             )}
                         </TabsContent>
                         <TabsContent value="students" className="space-y-4" >
-                            {(selectedCourse) ? (
+                            {(currentCourse) ? (
                                 <StudentManagementTab />
                             ) : (
                                 <div className="w-full h-24 text-center">
@@ -140,17 +148,7 @@ export default function Courses() {
                     </Tabs>
                 </CardContent>
             </Card>
-            <Card className="col-span-4">
-                <CardHeader>
-                    <CardTitle className="flex justify-between items-center">
-                        List of all courses
-                    </CardTitle>
-                    <CardDescription>Select one to view details above</CardDescription>
-                </CardHeader>
-                <CardContent className="">
-                    <CoursesTable />
-                </CardContent>
-            </Card>
+
         </div>
     )
 }

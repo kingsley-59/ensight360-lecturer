@@ -1,5 +1,6 @@
 import { toast } from "@/components/ui/use-toast";
 import { axiosInstance } from "@/config";
+import { Assessment } from "@/types/types";
 
 
 /** create course interface having properties title, code, units, hasPractical, coordinator, departmentId */
@@ -9,7 +10,10 @@ export interface CreateCourse {
     units: number
     hasPractical: boolean
     coordinator: string
+    semester: string
+    level: number
     departmentId: string
+    assessments: Omit<Assessment, 'course'>[]
 }
 export async function createCourse(payload: CreateCourse) {
     try {

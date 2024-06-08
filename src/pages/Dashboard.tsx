@@ -169,7 +169,7 @@ export default function DashboardPage() {
                                     <CardTitle className="flex justify-between items-center">
                                         Classes
                                         <CreateClassDialog>
-                                            <Button variant={'default'} className="flex gap-2 text-base" >Create <PlusIcon size={20} /> </Button>
+                                            <Button role="alertdialog" variant={'default'} className="flex gap-2 text-base" >Create <PlusIcon size={20} /> </Button>
                                         </CreateClassDialog>
                                     </CardTitle>
                                 </CardHeader>

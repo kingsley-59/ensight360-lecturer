@@ -58,3 +58,25 @@ export const getStudentByEmail = async (email: string) => {
         })
     }
 }
+
+// TODO: get students by class id using this api GET '/class/:classId/dept/:departmentId'
+export const getStudentsByClassId = async (classId: string, departmentId: string) => {
+    try {
+        const { data, status } = await axiosInstance.get(`/student/class/${classId}/dept/${departmentId}`);
+        if (status === 200) {
+            return data.data;
+        } else {
+            toast({
+                title: "Request failed",
+                description: data.message,
+                variant: 'warning'
+            })
+        }
+    } catch (error: unknown) {
+        toast({
+            title: "Request failed",
+            description: "Application error! Please contact admin",
+            variant: 'destructive'
+        })
+    }
+}

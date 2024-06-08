@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { useClassState, useDepartmentState } from "@/stores";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { CreateStudent, createStudent } from "@/api/student";
-import { Checkbox } from "../ui/checkbox";
 import useAuthStore from "@/stores/authStore";
 import { Class } from "@/types/types";
 
@@ -18,7 +17,11 @@ export default function EnrollStudentDialog({ children }: { children: ReactNode 
     const { user } = useAuthStore()
     const { classList } = useClassState()
     const { currentDepartment } = useDepartmentState()
-    const { register, handleSubmit } = useForm<CreateStudent>();
+    const { register, watch, setValue, handleSubmit } = useForm<CreateStudent>({
+        defaultValues: {
+            requireApproval: false
+        }
+    });
 
     const [loading, setLoading] = useState(false)
     const [assignedClasses, setAssignedClasses] = useState<Class[]>([])
@@ -60,12 +63,8 @@ export default function EnrollStudentDialog({ children }: { children: ReactNode 
                         <Input id="studentEmail" placeholder="Student Email" type="email" {...register('studentEmail')} required />
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="classId">Class Id</Label>
-                        <Input id="classId" placeholder="Class Id" {...register('classId')} required />
-                    </div>
-                    <div className="grid gap-2">
                         <Label htmlFor="">Class</Label>
-                        <Select {...register('classId')} required>
+                        <Select value={watch('classId', '')} onValueChange={(value) => setValue('classId', value)} {...register('classId')} required>
                             <SelectTrigger>
                                 <SelectValue placeholder='Select class' />
                             </SelectTrigger>
@@ -78,10 +77,10 @@ export default function EnrollStudentDialog({ children }: { children: ReactNode 
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="">Department</Label>
-                        <Input id="" placeholder="e.g. Mechanical Engineering" value={currentDepartment?.name} readOnly />
+                        <Input type="text" placeholder="e.g. Mechanical Engineering" value={currentDepartment?.name} readOnly />
                     </div>
                     <div className="flex items-center gap-2">
-                        <Checkbox id="requireApproval" {...register('requireApproval')} />
+                        <input type="checkbox" id="requireApproval" checked={watch('requireApproval')} onChange={(e) => setValue('requireApproval', e.target.checked)} className="w-4 h-4 checked:accent-slate-900" />
                         <Label htmlFor="requireApproval">Require Approval</Label>
                     </div>
                     <Button type="submit" variant='default' className="w-full" disabled={loading}>

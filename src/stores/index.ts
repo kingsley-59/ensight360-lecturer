@@ -38,8 +38,8 @@ export const useDepartmentState = create<DepartmentState>()(
 )
 
 interface ClassState {
-    currentClass: string | Class | null,
-    setCurrentClass: (currClass: Class | string) => void,
+    currentClass: Class | null,
+    setCurrentClass: (currClass: Class | null) => void,
     classList: Class[],
     refreshClassList: (department: string) => void,
 }
@@ -76,6 +76,7 @@ export const useCourseState = create<CourseState>((set) => ({
     refreshCourseList: async (department) => {
         const results = await getAllDepartmentCourses(department);
         if (Array.isArray(results) && results.length) {
+            console.log('courses', results)
             set((state) => ({
                 ...state, courseList: results
             }))

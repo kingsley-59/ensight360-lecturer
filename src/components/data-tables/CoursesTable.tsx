@@ -1,19 +1,25 @@
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, Row } from "@tanstack/react-table"
 import { DataTable } from "../dashboard/DataTable"
 import { Button } from "../ui/button"
+import { Course } from "@/types/types"
+import { useCourseState } from "@/stores"
 
 
-const sampleCourses = [
-    { name: "Manufacturing Processes", code: 'MEE407', unit: 3, semester: 'Harmattan', level: 400 },
-    { name: "Manufacturing Processes", code: 'MEE407', unit: 3, semester: 'Harmattan', level: 400 },
-    { name: "Manufacturing Processes", code: 'MEE407', unit: 3, semester: 'Harmattan', level: 400 },
-    { name: "Manufacturing Processes", code: 'MEE407', unit: 3, semester: 'Harmattan', level: 400 },
-    { name: "Manufacturing Processes", code: 'MEE407', unit: 3, semester: 'Harmattan', level: 400 },
-]
 
-const columns: ColumnDef<typeof sampleCourses[0]>[] = [
+function CourseTableActions({ row }: { row: Row<Course> }) {
+    const { setCurrentCourse } = useCourseState()
+
+    return (
+        <div className="flex gap-2">
+            {/* <Button size="sm" variant="outline">Edit</Button> */}
+            <Button size="sm" variant="secondary" onClick={() => setCurrentCourse(row.original)}>View</Button>
+        </div>
+    )
+}
+
+const columns: ColumnDef<Course>[] = [
     {
-        accessorKey: 'name',
+        accessorKey: 'title',
         header: 'Course'
     },
     {
@@ -21,7 +27,7 @@ const columns: ColumnDef<typeof sampleCourses[0]>[] = [
         header: 'Code'
     },
     {
-        accessorKey: 'unit',
+        accessorKey: 'units',
         header: 'Units',
     },
     {
@@ -35,19 +41,15 @@ const columns: ColumnDef<typeof sampleCourses[0]>[] = [
     {
         id: 'actions',
         header: 'Actions',
-        cell: () => {
-            return (
-                <Button variant={'outline'}>View</Button>
-            )
-        }
+        cell: ({row}) => <CourseTableActions row={row} />
     }
 ]
 
 
-export default function CoursesTable() {
+export default function CoursesTable({ data }: { data: Course[] }) {
     return (
         <div className="container !px-0 mx-auto ">
-            <DataTable columns={columns} data={sampleCourses} />
+            <DataTable columns={columns} data={data} />
         </div>
     )
 }

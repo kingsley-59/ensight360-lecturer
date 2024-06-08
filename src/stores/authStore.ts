@@ -1,6 +1,7 @@
 import { User } from "@/types/types";
 import { create } from "zustand";
 import { persist, devtools } from "zustand/middleware";
+import { useDepartmentState } from ".";
 // import { User, getAdditionalUserInfo, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 // import { auth, googleAuthProvider } from "../config";
 // import { toast } from 'react-toastify'
@@ -60,6 +61,7 @@ const useAuthStore = create<AuthState>()(
                 logout: async () => {
                     set((state) => ({ ...state, user: null, token: null, isAuthenticated: false }))
                     localStorage.removeItem('ensi-36o_token')
+                    useDepartmentState.setState({ currentDepartment: null, departmentList: [] })
                 },
             }),
             {
