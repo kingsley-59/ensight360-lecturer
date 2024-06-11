@@ -1,4 +1,4 @@
-import { User } from "@/types/types";
+import { ProfileType, User } from "@/types/types";
 import { create } from "zustand";
 import { persist, devtools } from "zustand/middleware";
 import { useDepartmentState } from ".";
@@ -21,6 +21,8 @@ type AuthState = {
     setIsAuthenticated: (isAuthenticated: boolean) => void;
     user: User | null;
     setUser: (user: User) => void;
+    profileType: ProfileType | '';
+    setProfileType: (profileType: ProfileType | '') => void;
     login?: (email: string, password: string) => Promise<void>;
     loginWithGoogle?: () => void;
     logout: () => void;
@@ -40,6 +42,8 @@ const useAuthStore = create<AuthState>()(
                 },
                 user: null,
                 setUser: (user) => set((state) => ({ ...state, user })),
+                profileType: '',
+                setProfileType: (profileType) => set((state) => ({ ...state, profileType })),
                 // login: async (email: string, password: string) => {
                 //     const userCredentials = await signInWithEmailAndPassword(auth, email, password);
                 //     set((state) => ({

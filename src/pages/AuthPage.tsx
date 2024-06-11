@@ -13,9 +13,9 @@ import { Navigate } from "react-router-dom";
 
 export default function AuthPage() {
 
-    const { isAuthenticated } = useAuthStore();
+    const { isAuthenticated, profileType } = useAuthStore();
 
-    if (isAuthenticated && localStorage.getItem('ensi-36o_token')) {
+    if (isAuthenticated && localStorage.getItem('ensi-36o_token') && !!profileType) {
         return <Navigate to='/' />;
     }
 

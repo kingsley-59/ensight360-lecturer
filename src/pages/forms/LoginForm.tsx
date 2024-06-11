@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useDepartmentState } from "@/stores"
 import useAuthStore from "@/stores/authStore"
+import { ProfileType } from "@/types/types"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
@@ -24,7 +25,7 @@ interface LoginForm {
 
 export default function LoginForm() {
     const { register, setValue, watch, handleSubmit } = useForm<LoginForm>()
-    const { setUser, setIsAuthenticated, setToken } = useAuthStore()
+    const { setUser, setProfileType, setIsAuthenticated, setToken } = useAuthStore()
     const { refreshList } = useDepartmentState()
     const [loading, setLoading] = useState(false)
 
@@ -32,9 +33,10 @@ export default function LoginForm() {
         setLoading(true)
         const result = await loginUser({ ...formData }).finally(() => setLoading(false))
         console.log('login result', result)
-        if (result && result?.accessToken) {
+        if (result && result?.accessToken && result.profile.__type) {
             localStorage.setItem('ensi-36o_token', result?.accessToken);
             setUser(result)
+            setProfileType(result?.profile.__type.toLowerCase() as ProfileType)
             setIsAuthenticated(true)
             setToken(result?.accessToken)
             refreshList()
@@ -73,7 +75,7 @@ export default function LoginForm() {
                                 <SelectValue placeholder="Select profile" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="student" disabled>student</SelectItem>
+                                <SelectItem value="student">student</SelectItem>
                                 <SelectItem value="lecturer">lecturer</SelectItem>
                             </SelectContent>
                         </Select>

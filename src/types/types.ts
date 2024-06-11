@@ -13,6 +13,11 @@ export enum UserRole {
     SUPERADMIN = 'superadmin',
 }
 
+export enum ProfileType {
+    LECTURER = 'lecturer',
+    STUDENT = 'student',
+}
+
 export enum EnrollmentStatus {
     PENDING = 'Pending',
     ACTIVE = 'Active',
@@ -40,12 +45,13 @@ export interface User extends Model {
 }
 
 export interface Profile extends Model {
+    __type: ProfileType,
     user: User | string,
     fullname: string,
-    bio: string,
-    phoneNumber: string,
-    address: string,
-    dob: string,
+    bio?: string,
+    phoneNumber?: string,
+    address?: string,
+    dob?: string,
 }
 
 export interface Lecturer extends Profile { }
