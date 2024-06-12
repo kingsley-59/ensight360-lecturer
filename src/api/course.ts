@@ -61,3 +61,24 @@ export async function getAllDepartmentCourses(departmentId: string) {
         })
     }
 }
+
+export async function getCourseUniqueSessions(courseId: string) {
+    try {
+        const {data, status} = await axiosInstance.get('/course/sessions/'+courseId);
+        if (status == 200) {
+            return data.data
+        } else {
+            toast({
+                title: "Request failed",
+                description: data.message,
+                variant: 'warning'
+            })
+        }
+    } catch (error: unknown) {
+        toast({
+            title: "Request failed",
+            description: "Application error! Please contact admin",
+            variant: 'destructive'
+        })
+    }
+}

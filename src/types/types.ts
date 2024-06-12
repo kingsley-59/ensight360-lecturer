@@ -93,7 +93,7 @@ export interface Assessment {
     maxScore: number,
 }
 
-export interface Course {
+export interface Course extends Model {
     title: string,
     code: string,
     description?: string,
@@ -117,3 +117,11 @@ export interface Enrollment extends Model {
     enrollmentDate: string,
     emrollmentStatus: EnrollmentStatus
 } 
+
+export interface RegisteredCourse extends Model {
+    student: string,
+    course: Course,
+    scores: (Assessment & {achievedScore: number})[],
+    session: string,
+    totalScore: number,
+}

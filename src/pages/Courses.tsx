@@ -1,13 +1,16 @@
+import { getCourseUniqueSessions } from "@/api/course";
+import { getStudentByCourseRegistered } from "@/api/student";
 import CoursesTable from "@/components/data-tables/CoursesTable";
-import StudentsTable from "@/components/data-tables/StudentsTable";
+import CourseStudentsTable, { CourseStudentsTableData } from "@/components/data-tables/CourseStudentsTable";
 import CreateCourseDialog from "@/components/dialogs/CreateCourseDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCourseState, useDepartmentState } from "@/stores";
 import { Course } from "@/types/types";
 import { FileIcon } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 function CourseSummaryTab({ course }: { course: Course }) {
@@ -69,20 +72,63 @@ function CourseSummaryTab({ course }: { course: Course }) {
                     </li>
                 </ul>
             </div>
-            
+
         </div>
     )
 }
 
+
 function StudentManagementTab() {
+    const { currentDepartment } = useDepartmentState()
+    const { currentCourse } = useCourseState()
+
+    const [sessions, setSessions] = useState<string[]>([])
+    const [tableData, setTableData] = useState<CourseStudentsTableData[]>([])
+
+    const [selectedSession, setSelectedSession] = useState('2024-2025')
+
+    useEffect(() => {
+        if (currentCourse?._id) {
+            getCourseUniqueSessions(currentCourse._id)
+                .then(data => {
+                    if (Array.isArray(data)) setSessions(data)
+                })
+        }
+    }, [currentCourse?._id])
+
+    useEffect(() => {
+        const courseId = currentCourse?._id;
+        const departmentId = currentDepartment?._id;
+        (async () => {
+            if (courseId && departmentId) {
+                const data = await getStudentByCourseRegistered(currentCourse._id, currentDepartment?._id, selectedSession)
+                console.log('registered',data)
+                if (Array.isArray(data) && data.length) setTableData(data)
+            }
+        })()
+    }, [currentCourse?._id, currentDepartment?._id, selectedSession])
 
     return (
         <div className="w-full space-y-4">
-            <div className="space-y-2">
-                <CardTitle>Student Management</CardTitle>
-                <CardDescription>Manage the students enrolled in this course</CardDescription>
+            <div className="w-full flex items-start justify-between">
+                <div className="space-y-2">
+                    <CardTitle>Student Management</CardTitle>
+                    <CardDescription>Select academic session to see registered students.</CardDescription>
+                </div>
+                <div className="w-full max-w-48 space-y-2">
+                    <Select value={selectedSession} onValueChange={(value) => setSelectedSession(value)} required>
+                        <SelectTrigger>
+                            <SelectValue className="" placeholder='Select session' />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {sessions.map((item) => (
+                                <SelectItem key={item} value={item}>{item}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
             </div>
-            <StudentsTable />
+            <CourseStudentsTable data={tableData} />
         </div>
     )
 }
@@ -108,7 +154,7 @@ export default function Courses() {
                     <CardTitle className="flex justify-between items-center">
                         List of all courses
                     </CardTitle>
-                    <CardDescription>Select one to view details above</CardDescription>
+                    <CardDescription>Select one to view details below</CardDescription>
                 </CardHeader>
                 <CardContent className="">
                     <CoursesTable data={courseList} />
