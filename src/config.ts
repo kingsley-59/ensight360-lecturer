@@ -2,7 +2,7 @@ import axios from "axios";
 import useAuthStore from "./stores/authStore";
 
 
-export const API_URL = (process.env.NODE_ENV === 'development') ? 'http://localhost:3030/' : 'https://yeeppie-be.onrender.com';
+export const API_URL = (process.env.NODE_ENV === 'development') ? 'http://localhost:3030/' : 'https://ensight360-be.onrender.com/';
 
 export const axiosInstance = axios.create({
     baseURL: API_URL,
