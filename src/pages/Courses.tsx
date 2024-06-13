@@ -103,10 +103,10 @@ function StudentManagementTab() {
             if (courseId && departmentId) {
                 const data = await getStudentByCourseRegistered(currentCourse._id, currentDepartment?._id, selectedSession)
                 console.log('registered',data)
-                if (Array.isArray(data) && data.length) setTableData(data)
+                if (Array.isArray(data) && data.length) setTableData(data.map(item => ({...item, course: currentCourse})))
             }
         })()
-    }, [currentCourse?._id, currentDepartment?._id, selectedSession])
+    }, [currentCourse, currentDepartment?._id, selectedSession])
 
     return (
         <div className="w-full space-y-4">

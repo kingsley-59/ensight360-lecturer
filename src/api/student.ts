@@ -101,3 +101,24 @@ export const getStudentByCourseRegistered = async (courseId: string, departmentI
         })
     }
 }
+
+export const getStudentResults = async (enrollmentId: string) => {
+    try {
+        const { data, status } = await axiosInstance.get(`/student/result/${enrollmentId}/lecturer`);
+        if (status === 200) {
+            return data.data;
+        } else {
+            toast({
+                title: "Request failed",
+                description: data.message,
+                variant: 'warning'
+            })
+        }
+    } catch (error: unknown) {
+        toast({
+            title: "Request failed",
+            description: "Application error! Please contact admin",
+            variant: 'destructive'
+        })
+    }
+}

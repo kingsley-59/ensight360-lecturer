@@ -12,6 +12,7 @@ import ProfileHome from './pages/ProfileHome';
 import Courses from './pages/Courses';
 import TaskPage from './components/tasks';
 import Students from './pages/Students';
+import Results from './pages/Results';
 
 
 const router = createBrowserRouter([
@@ -57,7 +58,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'results',
-            element: <></>
+            element: <Results />
           },
           {
             path: 'tasks',

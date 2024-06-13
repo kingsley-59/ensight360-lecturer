@@ -8,16 +8,18 @@ import { useForm } from "react-hook-form";
 import { X } from "lucide-react";
 import { CourseStudentsTableData } from "../data-tables/CourseStudentsTable";
 import { toast } from "../ui/use-toast";
+import { updateStudentCourseScores } from "@/api/course";
 
 interface GradeStudentProps extends CourseStudentsTableData {
     children: ReactNode,
 }
-interface GradeStudentForm extends Omit<RegisteredCourse, 'student' | 'courser'> { }
+interface GradeStudentForm extends Omit<RegisteredCourse, 'student' | 'course'> { }
 
-export default function GradeStudentDialog({ children, registrationName, registrationNumber, scores: defaultScores, session }: GradeStudentProps) {
+export default function GradeStudentDialog(props: GradeStudentProps) {
+    const { children, registrationName, registrationNumber, scores: defaultScores, session, course } = props;
     const { register, setValue, watch, handleSubmit } = useForm<GradeStudentForm>({
         defaultValues: {
-            scores: defaultScores || []
+            scores: defaultScores || [],
         }
     })
 
@@ -43,7 +45,8 @@ export default function GradeStudentDialog({ children, registrationName, registr
             })
         }
 
-        setLoading(false)
+        updateStudentCourseScores(course._id, session, formData.scores)
+            .finally(() => setLoading(false))
     }
 
     return (
@@ -90,7 +93,7 @@ export default function GradeStudentDialog({ children, registrationName, registr
                         ))}
                     </div>
                     <Button type="submit" variant='default' className="w-full" disabled={loading}>
-                        Create new class
+                        Update scores
                     </Button>
                 </form>
             </DialogContent>

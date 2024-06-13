@@ -15,7 +15,7 @@ import { Enrollment, RegisteredCourse } from "@/types/types"
 //     { name: "Akahibe Kingsley Uchechukwu", email: "johndoe@gmail.com", regNo: '20181095823', enrollmentStatus: 'Enrolled' },
 // ]
 
-export interface CourseStudentsTableData extends Enrollment, Omit<RegisteredCourse, 'student' | 'course'> {}
+export interface CourseStudentsTableData extends Enrollment, Omit<RegisteredCourse, 'student'> {}
 
 const columns: ColumnDef<CourseStudentsTableData>[] = [
     {

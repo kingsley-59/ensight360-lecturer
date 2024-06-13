@@ -42,7 +42,7 @@ export default function CreateDepartment() {
                             </div>
                             <div className="grid gap-2">
                                 <Label>Short</Label>
-                                <Input type="text" placeholder="e.g. MEE" {...register("short")} required />
+                                <Input type="text" placeholder="e.g. MEE" {...register("code")} required />
                             </div>
                             <div className="grid gap-2">
                                 <Label>Faculty</Label>
